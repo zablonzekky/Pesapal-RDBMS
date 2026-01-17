@@ -1,0 +1,5 @@
+{
+  "name": "Pesapal RDBMS Challenge",
+  "description": "A custom SQL-based Relational Database Management System (RDBMS) built from scratch with a React-based frontend, featuring a SQL REPL, table explorer, and a demo financial application.",
+  "requestFramePermissions": []
+}
