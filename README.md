@@ -1,149 +1,191 @@
+# PesaDB
 
-# PesaDB - Browser-Native Relational Database Management System
+A lightweight relational database management system built entirely in TypeScript, running directly in the browser.
 
-A lightweight, fully functional relational database engine built entirely in TypeScript, running directly in the browser. No backend required.
-
-Built with inspiration from modern database architectures and AI-assisted development workflows using Claude AI and AI Studio.
+**Built for Pesapal Junior Dev Challenge '26**
 
 ## Features
 
-- ✅ **Full SQL Support** - SELECT, INSERT, UPDATE, DELETE with WHERE clauses
-- ✅ **JOIN Operations** - INNER JOIN with relational integrity
-- ✅ **Schema Management** - CREATE TABLE with constraints (PRIMARY KEY, UNIQUE, NOT NULL)
-- ✅ **Visual Table Explorer** - CRUD operations without writing SQL
-- ✅ **Transaction Ledger** - Real-time JOIN query demonstration
-- ✅ **Browser Storage** - Persistent data using localStorage
-- ✅ **TypeScript** - Type-safe implementation throughout
+**Core Database Engine**
+- SQL query support (SELECT, INSERT, UPDATE, DELETE)
+- JOIN operations with relational integrity
+- Schema management with constraints (PRIMARY KEY, UNIQUE, NOT NULL)
+- Index-based optimization for fast lookups
+- Browser-native persistence with localStorage
 
-## Live Demo
+**Interactive Interface**
+- SQL REPL with query execution
+- Visual table explorer for CRUD operations
+- Real-time transaction ledger demo
+- System architecture documentation
 
-Experience PesaDB in action with our interactive demo featuring:
-- Merchant management system
-- Transaction processing
-- Real-time ledger with JOIN queries
-- Visual database explorer
+## Quick Start
 
-## Run Locally
+**Prerequisites:** Node.js 16+
 
-**Prerequisites:** Node.js (v16 or higher)
-
-1. **Clone the repository:**
 ```bash
-   git clone <your-repo-url>
-   cd pesadb
+# Clone and navigate
+git clone <your-repo-url>
+cd pesadb
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Open browser
+# Navigate to http://localhost:3000
 ```
 
-2. **Install dependencies:**
-```bash
-   npm install
+## Usage
+
+### SQL Examples
+
+```sql
+-- Create table
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE
+)
+
+-- Insert data
+INSERT INTO users (id, name, email) 
+VALUES (1, 'John Doe', 'john@example.com')
+
+-- Query with JOIN
+SELECT t.id, u.name, t.amount 
+FROM transactions t
+JOIN users u ON t.user_id = u.id
+WHERE t.amount > 100
 ```
 
-3. **Run the development server:**
-```bash
-   npm run dev
-```
+### Programmatic API
 
-4. **Open your browser:**
-   Navigate to `http://localhost:3000`
-
-## Project Structure
-```
-.
-├── index.html                # Entry point & Tailwind/Fonts setup
-├── index.tsx                 # React mounting logic
-├── App.tsx                   # Main state & Tab navigation
-├── types.ts                  # Shared SQL & Database type definitions
-├── metadata.json             # App metadata
-├── rdbms/                    # The Custom SQL Engine
-│   ├── database.ts           # Main PesaDB API & AI Context Helper
-│   └── core/
-│       ├── storage.ts        # LocalStorage persistence layer
-│       ├── parser.ts         # SQL String to Object Plan parser
-│       └── executor.ts       # Query execution & JOIN logic
-├── components/               # UI Components
-│   ├── Layout.tsx            # App shell & Sidebar
-│   ├── DemoApp.tsx           # M-Pesa Simulator & Merchant UI
-│   ├── SQLRepl.tsx           # Terminal & AI Assistant interface
-│   ├── TableExplorer.tsx     # Direct data & schema browser
-│   └── ArchitectureDocs.tsx  # System documentation
-├── package.json              # Dependencies
-├── tsconfig.json             # TypeScript configuration
-└── vite.config.ts            # Build tool configuration
-
-## Usage Examples
-
-### SQL Queries
 ```typescript
-// Create a table
-PesaDB.query(`
-  CREATE TABLE users (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT UNIQUE
-  )
-`);
+import { PesaDB } from './rdbms/database';
 
-// Insert data
-PesaDB.query(`
-  INSERT INTO users (id, name, email) 
-  VALUES (1, 'John Doe', 'john@example.com')
-`);
+// Execute queries
+const result = PesaDB.query('SELECT * FROM users');
 
-// Query with JOIN
-PesaDB.query(`
-  SELECT transactions.id, users.name, transactions.amount 
-  FROM transactions 
-  JOIN users ON transactions.user_id = users.id
-`);
+// Access results
+console.log(result.rows);
 ```
 
-### Visual Interface
-Use the Table Explorer to:
-- Browse all tables in the catalog
-- Add/Edit/Delete records with forms
-- View schema definitions
-- No SQL knowledge required!
+## Architecture
+
+```
+pesadb/
+├── rdbms/              # Database engine
+│   ├── database.ts     # Main API
+│   └── core/
+│       ├── storage.ts  # Persistence layer
+│       ├── parser.ts   # SQL parser
+│       └── executor.ts # Query execution
+├── components/         # React UI
+│   ├── SQLRepl.tsx     # Query interface
+│   ├── TableExplorer.tsx
+│   └── DemoApp.tsx     # Transaction demo
+└── types.ts            # Type definitions
+```
+
+## Implementation Highlights
+
+**Query Processing**
+- Recursive descent SQL parser
+- Query plan optimization
+- Index-based lookups (O(1) for primary keys)
+- Efficient JOIN using hash joins
+
+**Constraint Enforcement**
+- Primary key uniqueness validation
+- Unique constraint checking
+- NOT NULL enforcement
+- Type validation on insert/update
+
+**Storage**
+- In-memory row storage
+- localStorage persistence
+- Automatic index maintenance
+- Schema versioning
 
 ## Tech Stack
 
-- **React** - UI framework
-- **TypeScript** - Type safety
+- **TypeScript** - Type-safe implementation
+- **React** - User interface
+- **Vite** - Build tooling
 - **Tailwind CSS** - Styling
-- **Vite** - Build tool
 
-## Development Notes
+## Development
 
-This project was developed with AI assistance from:
-- **Claude AI** (Anthropic) - Code architecture and implementation
-- **AI Studio** - Initial prototyping and design patterns
+```bash
+# Run tests
+npm test
 
-The RDBMS engine implements core relational database concepts including:
-- B-tree-like indexing for primary keys
-- Query optimization for JOIN operations
-- ACID-compliant transaction handling (in-memory)
-- Schema validation and constraint enforcement
+# Build for production
+npm run build
 
-## Contributing
+# Type checking
+npm run type-check
+```
 
-Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest features
-- Submit pull requests
+## Design Decisions
 
-## License
+**Browser-First Architecture**
+- No backend dependency for easy deployment
+- localStorage provides sufficient persistence for demo
+- Client-side processing demonstrates core RDBMS concepts
 
-MIT License - See [LICENSE](LICENSE) for details
+**SQL Dialect**
+- Subset of SQL that covers essential operations
+- Focus on quality over quantity of features
+- Extensible parser design for future enhancements
 
-## Acknowledgments
+**Performance Trade-offs**
+- Hash-based indexes for O(1) primary key lookups
+- In-memory processing for fast query execution
+- Trade memory for speed (appropriate for browser context)
 
-- Built as a demonstration of browser-native database capabilities
-- Inspired by SQLite architecture
-- Developed with AI-assisted workflows ai studio and claude
-I used Claude AI to:
-- Generate initial project structure
-- Review code for best practices
-- Debug complex issues
-- Improve documentation clarity
----
+## Limitations & Future Work
 
-**Note:** PesaDB is a demo project for educational purposes and job interviews. For production applications, use established database solutions.
+**Current Limitations**
+- In-memory only (data lost on page refresh without localStorage)
+- Single-user context
+- Limited to browser storage quota (~5-10MB)
+
+**Future Enhancements**
+- IndexedDB for larger datasets
+- Web Worker for background processing
+- Advanced SQL features (GROUP BY, aggregate functions)
+- Transaction rollback support
+- Query result caching
+
+## AI-Assisted Development
+
+This project was developed with AI assistance to accelerate development and ensure best practices:
+
+**Claude AI (Anthropic)** - Used for:
+- Initial project architecture and structure
+- Code review and optimization suggestions
+- Documentation improvement
+- Debugging complex query execution logic
+
+All core algorithms, design decisions, and implementation details reflect my understanding of database systems. AI was used as a learning and productivity tool, similar to technical documentation or Stack Overflow.
+
+## Resources Referenced
+
+- Database System Concepts (Silberschatz et al.) - Index design patterns
+- SQLite Documentation - SQL syntax and parsing approaches
+- TypeScript Handbook - Type system best practices
+
+## Author
+
+**Your Name**
+- GitHub: (https://github.com/zablonzekky)
+- Email: ewwabwoba@gmail.com
+- LinkedIn: (https://www.linkedin.com/in/ezekiel-wabwoba/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3BY%2FFOFcT9QqCggkcqLaTIFQ%3D%3D)
+
+Built as part of the Pesapal Junior Developer Challenge 2026.
+
+**Note:** PesaDB is an educational project demonstrating RDBMS concepts in a browser environment. For production use, consider established solutions like PostgreSQL, MySQL, or SQLite.

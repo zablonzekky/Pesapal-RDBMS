@@ -44,7 +44,7 @@ const SQLRepl: React.FC = () => {
 
       {/* History Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6 mono text-sm scroll-smooth">
-        <div className="text-blue-400 mb-2">Welcome to PesaDB REPL. Type HELP for a list of commands.</div>
+        <div className="text-blue-400 mb-2">Welcome to PesaDB REPL. Type SQL commands below.</div>
         
         {history.map((item, idx) => (
           <div key={idx} className="space-y-2">
