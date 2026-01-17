@@ -5,7 +5,6 @@ A lightweight relational database management system built entirely in TypeScript
 **Built for Pesapal Junior Dev Challenge '26**
 
 ## Features
-
 **Core Database Engine**
 - SQL query support (SELECT, INSERT, UPDATE, DELETE)
 - JOIN operations with relational integrity
